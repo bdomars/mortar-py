@@ -83,7 +83,8 @@ def get_elevation_lerp(dist):
 
 
 def get_elevation_spline(dist):
-    return float(interpolate.splev(dist, mils_spline))
+    reachable = dist >= 50 and dist <= 1250
+    return reachable, float(interpolate.splev(dist, mils_spline))
 
 
 def get_range(to_target):
@@ -95,14 +96,17 @@ def calculate(base, target):
 
     angle = get_angle(to_target)
     distance = get_range(to_target)
-    elev = get_elevation_spline(distance)
+    reachable, elev = get_elevation_spline(distance)
 
     print
     print "Targeting solution"
     print "---------------------------"
     print "Angle      : {:>10.1f} degrees".format(angle)
     print "Range      : {:>10.1f} m".format(distance)
-    print "Elevation  : {:>10.1f} mils".format(elev)
+    if reachable:
+        print "Elevation  : {:>10.1f} mils".format(elev)
+    else:
+        print "Elevation  :        N/A"
     print
     print "Ready to fire!"
     print
