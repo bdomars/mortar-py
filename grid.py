@@ -102,7 +102,7 @@ def calculate(base, target):
     print "Targeting solution"
     print "---------------------------"
     print "Angle      : {:>10.1f} degrees".format(angle)
-    print "Range      : {:>10.1f} m".format(distance)
+    print "Distance   : {:>10.1f} m".format(distance)
     if reachable:
         print "Elevation  : {:>10.1f} mils".format(elev)
     else:
