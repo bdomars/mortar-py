@@ -4,10 +4,42 @@ import math
 
 import numpy as np
 import numpy.linalg as la
-
+from scipy import interpolate
 
 base_grid = 300.0
 north_vec = np.array([0, -100])
+
+ranges = np.arange(50, 1251, 50)
+mils = np.array([
+    1579,
+    1558,
+    1538,
+    1517,
+    1496,
+    1475,
+    1453,
+    1431,
+    1409,
+    1387,
+    1364,
+    1341,
+    1317,
+    1292,
+    1267,
+    1240,
+    1212,
+    1183,
+    1152,
+    1118,
+    1081,
+    1039,
+    988,
+    918,
+    800
+])
+
+interp_mils = interpolate.interp1d(ranges, mils)
+mils_spline = interpolate.splrep(ranges, mils)
 
 
 def kp_to_pos(kp):
@@ -46,8 +78,34 @@ def get_angle(to_target):
         return angle
 
 
+def get_elevation_lerp(dist):
+    return float(interp_mils(dist))
+
+
+def get_elevation_spline(dist):
+    return float(interpolate.splev(dist, mils_spline))
+
+
 def get_range(to_target):
     return la.norm(to_target)
+
+
+def calculate(base, target):
+    to_target = target - base
+
+    angle = get_angle(to_target)
+    distance = get_range(to_target)
+    elev = get_elevation_spline(distance)
+
+    print
+    print "Targeting solution"
+    print "---------------------------"
+    print "Angle      : {:>10.1f} degrees".format(angle)
+    print "Range      : {:>10.1f} m".format(distance)
+    print "Elevation  : {:>10.1f} mils".format(elev)
+    print
+    print "Ready to fire!"
+    print
 
 
 if __name__ == "__main__":
@@ -59,10 +117,7 @@ if __name__ == "__main__":
     base = grid_to_pos(args.base)
     target = grid_to_pos(args.target)
 
-    to_target = target - base
+    calculate(base, target)
 
-    angle = get_angle(to_target)
-    range = get_range(to_target)
 
-    print "Angle = {}".format(angle)
-    print "Range = {}m".format(range)
+
