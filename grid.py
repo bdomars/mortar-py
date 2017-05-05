@@ -43,8 +43,8 @@ mils_spline = interpolate.splrep(ranges, mils)
 
 
 def kp_to_pos(kp):
-    x = (kp - 1) % 3
-    y = 2 - ((kp - 1) / 3)
+    x = (kp - 1) % 3 - 1
+    y = 1 - (kp - 1) / 3
     return np.array([x, y])
 
 
@@ -52,12 +52,12 @@ def gridletter(chr):
     assert(len(chr) == 1)
     num = ord(chr.upper()) - 65
     assert(num >= 0 and num < 26)
-    return num
+    return num + 1
 
 
 def grid_to_pos(gridstr):
-    base_x = gridletter(gridstr[0])
-    base_y = int(gridstr[1]) - 1
+    base_x = gridletter(gridstr[0]) + 0.5
+    base_y = int(gridstr[1]) - 1 + 0.5
     basecoord = np.array([base_x, base_y]) * base_grid
     kps = gridstr[2:]
     for n, kp in enumerate(kps):
