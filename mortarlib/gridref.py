@@ -32,7 +32,7 @@ class GridRef(object):
         self._vector = None
 
     def __str__(self):
-        return "{}{}K{}".format(self.letter, self.major, self.keypads)
+        return "{}{}K{}".format(self.letter, self.major, ''.join([str(x) for x in self.keypads]))
 
     def __repr__(self):
         return "<GridRef: {}>".format(self)
