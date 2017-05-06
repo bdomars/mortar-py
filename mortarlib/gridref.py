@@ -7,8 +7,19 @@ BASE_GRID = 300.0
 
 
 class GridRef(object):
+    '''
+    GridRef is a class to contain grid references in a meaningful way for calculations.
+    A GridRef is usually constructed using the classmethod GridRef.from_string().
+    '''
 
     def __init__(self, letter, major, keypads=None):
+        '''Initializing a GridRef requires two paramaters with an optional thrid parameter.
+
+            Params:
+            * letter - A letter A-Z representing the x coordinate of a major grid cell
+            * major - An integer representing the y coordinate of a major grid cell
+            * keypads (optional) - A list of integers (1-9) for specifying sub grid cells
+        '''
         self.letter = letter.upper()
         self.major = int(major)
 
@@ -33,6 +44,9 @@ class GridRef(object):
 
     @property
     def vector(self):
+        '''
+        A numpy vector from the origin to the center of the referenced grid cell.
+        '''
         if not self._vector:
             self._calculate()
 
@@ -62,6 +76,16 @@ class GridRef(object):
 
     @classmethod
     def from_string(cls, gridstr):
+        '''
+        Method for constructing GridRef's from strings.
+        Strings are at least on letter followed by one or two integers,
+        optionally one might specify any number of keypads and subkeypads
+        following the letter K. Like so:
+        * A1
+        * A12
+        * A1K12
+        * A10K12
+        '''
         m = re.match(r'^(\w)(\d{1,2})(?:K(\d+))?$', gridstr)
         if m:
             letter = str(m.group(1))
