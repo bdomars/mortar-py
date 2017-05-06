@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 import argparse
 import math
-import sys
 
 import numpy as np
 import numpy.linalg as la
@@ -92,13 +91,10 @@ def calculate(base, target):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('base')
-    # parser.add_argument('target')
+    parser.add_argument('target')
     args = parser.parse_args()
 
-    print GridRef.from_string(args.base).vector
-    sys.exit(0)
+    base = GridRef.from_string(args.base)
+    target = GridRef.from_string(args.target)
 
-    base = grid_to_pos(args.base)
-    target = grid_to_pos(args.target)
-
-    calculate(base, target)
+    calculate(base.vector, target.vector)
