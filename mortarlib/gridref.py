@@ -22,6 +22,7 @@ class GridRef(object):
         '''
         self.letter = letter.upper()
         self.major = int(major)
+        self._verify_major()
 
         if keypads:
             self.keypads = keypads
@@ -41,6 +42,10 @@ class GridRef(object):
         for k in self.keypads:
             if k < 1 or k > 9:
                 raise GridError("Keypads must be in the range 1-9")
+
+    def _verify_major(self):
+        if self.major < 1:
+            raise GridError("major coordinate cannot be < 1")
 
     @property
     def vector(self):

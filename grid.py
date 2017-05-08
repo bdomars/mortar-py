@@ -7,6 +7,7 @@ import numpy.linalg as la
 from scipy import interpolate
 
 from mortarlib import GridRef
+from mortarlib.errors import Error
 
 NORTH = np.array([0, -100])
 
@@ -94,7 +95,10 @@ if __name__ == "__main__":
     parser.add_argument('target')
     args = parser.parse_args()
 
-    base = GridRef.from_string(args.base)
-    target = GridRef.from_string(args.target)
+    try:
+        base = GridRef.from_string(args.base)
+        target = GridRef.from_string(args.target)
 
-    calculate(base.vector, target.vector)
+        calculate(base.vector, target.vector)
+    except Error as e:
+        print "Something went wrong: {}".format(e)
