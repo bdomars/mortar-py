@@ -45,12 +45,10 @@ mils_spline = interpolate.splrep(ranges, mils)
 
 
 def get_angle(to_target):
-    dot = np.dot(NORTH, to_target)
-    cross = np.cross(NORTH, to_target)
-    angle = math.degrees(np.arctan2(cross, dot))
+    angle = math.degrees(np.arctan2(to_target[0], -to_target[1]))
 
     if angle < 0:
-        return 180 + (180 - abs(angle))
+        return 360 + angle
     else:
         return angle
 
